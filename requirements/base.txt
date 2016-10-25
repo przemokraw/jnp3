@@ -1,0 +1,4 @@
+django==1.10.1
+djangorestframework==3.5.1
+djet==0.1.0
+factory-boy==2.7.0
