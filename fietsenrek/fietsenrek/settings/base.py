@@ -38,6 +38,7 @@ DJANGO_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'social.apps.django_app.default',
 ]
 
 LOCAL_APPS = [
@@ -70,6 +71,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social.apps.django_app.context_processors.backends',
+                'social.apps.django_app.context_processors.login_redirect',
             ],
         },
     },
@@ -107,6 +110,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'social.backends.google.GoogleOAuth2',
+    'social.backends.facebook.FacebookOAuth2'
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+FACEBOOK_APP_ID = '220499008364054'
+FACEBOOK_API_SECRET = '6b5a634ee7684409d08d3cb63e2f875e'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
