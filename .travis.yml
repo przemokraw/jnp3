@@ -1,0 +1,12 @@
+language: python
+python:
+  - 3.5
+install:
+  - pip install -r requirements/local.txt
+  - pip install coverage
+script: coverage run  --source="fietsenrek" --omit="*migrations*" fietsenrek/manage.py test fietsenrek
+after_success:
+  - pip install codecov
+  - codecov
+  - bash <(curl -s https://codecov.io/bash)
+
