@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/martarozek/jnp3.svg?branch=master)](https://travis-ci.org/martarozek/jnp3)
+
 # Fietsenrek
 Team project for a university course: designing highly efficient web services
 
