@@ -1,0 +1,14 @@
+[run]
+omit =
+  *migrations*
+  *static*
+  *settings*
+  *manage*
+  *__init__*
+  *wsgi*
+  *templates*
+  *apps*
+  *test*
+  *admin*
+  *urls*
+ 
