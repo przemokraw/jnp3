@@ -9,4 +9,6 @@ after_success:
   - pip install codecov
   - codecov
   - bash <(curl -s https://codecov.io/bash)
+notifications:
+  slack: jnp3team:e8S1abCggR61cH9R0hwcXaMg
 
