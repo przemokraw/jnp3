@@ -8,7 +8,7 @@ more _fietsenrekken_ in places where they are really needed.
 It's community-based: users submit places where a bike rack would be
 handy while others vote for it.
 
-To run the project locally follow these steps:
+To run the project backend locally follow these steps:
 
 1. Create a virtualenv with Python 3.5 (we suggest using a virtualenvwrapper)
 ```bash
@@ -41,3 +41,17 @@ pip install -r requirements/local.txt
  
 
 and you're good to go!
+
+To run the project frontend locally follow these steps:
+
+1. Install npm (https://docs.npmjs.com/getting-started/installing-node)
+ 
+2. `cd fietsenrek-frontend`
+
+3. `npm install`
+
+4. `npm install @angular/http` (may require additional libraries, install them if so)
+
+5. `npm run serve`
+
+6. Go to localhost:3000

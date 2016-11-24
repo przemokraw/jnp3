@@ -15,4 +15,6 @@ media
 *.DS_Store
 
 # frontend
-
+fietsenrek-frontend/node_modules
+fietsenrek-frontend/.tmp
+fietsenrek-frontend/.yo-rc.json
