@@ -7,7 +7,7 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.HomeView.as_view(), name='home'),
-    url(r'^admin/', admin.site.urls, name='admin'),
-    url(r'^accounts/', include('allauth.urls'), name='accounts'),
-    url(r'^racks/', include('racks.urls'), name='racks'),
+    url(r'^admin/', admin.site.urls,),
+    url(r'^accounts/', include('allauth.urls', namespace='accounts')),
+    url(r'^racks/', include('racks.urls', namespace='racks')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

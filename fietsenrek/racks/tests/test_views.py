@@ -1,3 +1,4 @@
+from django.urls import reverse_lazy
 from djet import restframework
 from rest_framework import status
 
@@ -87,3 +88,23 @@ class RackTopListTestCase(restframework.APIViewTestCase):
         assert len(response.data) == 10
         assert any(r['id'] == top_rack.id for r in response.data)
         assert not any(r['id'] == low_rack.id for r in response.data)
+
+
+class RackVoteViewTestCase(restframework.APIViewTestCase):
+    view_class = views.RackVoteView
+
+    def test_rack_should_be_upvoted_with_correct_data_and_1_vote(self):
+        initial_vote = 42
+        rack = RackFactory(vote=initial_vote)
+        data = {
+            'rack_id': rack.id,
+            'vote': 1,
+        }
+        request = self.factory.patch(data=data,
+                                     path=reverse_lazy('racks:vote'))
+
+        response = self.view(request)
+        rack.refresh_from_db()
+
+        assert response.status_code == status.HTTP_200_OK
+        assert rack.vote == initial_vote + 1

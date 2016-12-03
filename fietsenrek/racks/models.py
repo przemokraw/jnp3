@@ -26,3 +26,13 @@ class Rack(models.Model):
 
     def __str__(self):
         return '{} in {}'.format(self.place_id, self.city)
+
+    def up_vote(self):
+        self.vote += 1
+        self.save()
+        return self
+
+    def down_vote(self):
+        self.vote -= 1
+        self.save()
+        return self
