@@ -4,7 +4,7 @@ python:
 install:
   - pip install -r requirements/local.txt
   - pip install coverage
-script: coverage run  --source="fietsenrek" pytest
+script: pytest fietsenrek
 after_success:
   - pip install codecov
   - codecov
