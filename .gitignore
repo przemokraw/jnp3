@@ -1,9 +1,6 @@
 # database files
 db.sqlite3
 
-# pycharm files
-.idea
-
 # pyc & pycache files
 *.pyc
 __pycache__
@@ -11,10 +8,9 @@ __pycache__
 # media
 media
 
-# macOS
-*.DS_Store
-
 # frontend
 fietsenrek-frontend/node_modules
 fietsenrek-frontend/.tmp
 fietsenrek-frontend/.yo-rc.json
+
+.cache

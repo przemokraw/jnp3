@@ -23,6 +23,8 @@ class Rack(models.Model):
     author = models.ForeignKey(User, null=True)
     created = models.DateTimeField(auto_now_add=True)
     vote = models.IntegerField(default=0)
+    solved = models.BooleanField(default=False)
+    solution_photo = models.ImageField(blank=True, upload_to='racks_solutions')
 
     def __str__(self):
         return '{} in {}'.format(self.place_id, self.city)
@@ -34,5 +36,10 @@ class Rack(models.Model):
 
     def down_vote(self):
         self.vote -= 1
+        self.save()
+        return self
+
+    def solve(self):
+        self.solved = True
         self.save()
         return self

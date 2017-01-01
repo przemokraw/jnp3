@@ -11,7 +11,7 @@ from racks import views
 class RackCreateViewTestCase(restframework.APIViewTestCase):
     view_class = views.RackCreateView
 
-    def test_anynomous_user_should_submit_a_rack_successfully(self):
+    def test_rack_should_be_submitted_successfully__when_user_anonymous(self):
         place_id = 42
         city = 'Warsaw'
         country = 'Poland'
@@ -29,7 +29,7 @@ class RackCreateViewTestCase(restframework.APIViewTestCase):
         assert response.status_code == status.HTTP_201_CREATED
         assert Rack.objects.count() == 1
 
-    def test_authenticated_user_should_submit_a_rack_successfully(self):
+    def test_rack_should_be_submitted_successfully__when_user_authenticated(self):
         place_id = 42
         city = 'Warsaw'
         country = 'Poland'
@@ -50,7 +50,7 @@ class RackCreateViewTestCase(restframework.APIViewTestCase):
         assert Rack.objects.count() == 1
         assert Rack.objects.first().author == author
 
-    def test_rack_should_not_be_saved_with_incomplete_data(self):
+    def test_rack_should_not_be_saved__when_incomplete_data(self):
         data = {}
         request = self.factory.post(data=data)
 
@@ -63,7 +63,7 @@ class RackCreateViewTestCase(restframework.APIViewTestCase):
 class RackListViewTestCase(restframework.APIViewTestCase):
     view_class = views.RackListView
 
-    def test_view_should_return_all_racks_on_get(self):
+    def test_all_racks_should_be_returned__on_get(self):
         RackFactory.create_batch(10)
         request = self.factory.get()
 
@@ -76,7 +76,7 @@ class RackListViewTestCase(restframework.APIViewTestCase):
 class RackTopListTestCase(restframework.APIViewTestCase):
     view_class = views.RackTopListView
 
-    def test_view_should_return_all_racks_on_get(self):
+    def test_10_top_racks_should_be_returned__on_get(self):
         RackFactory.create_batch(10)
         top_rack = RackFactory(vote=100000)
         low_rack = RackFactory(vote=-100000)
@@ -90,21 +90,73 @@ class RackTopListTestCase(restframework.APIViewTestCase):
         assert not any(r['id'] == low_rack.id for r in response.data)
 
 
-class RackVoteViewTestCase(restframework.APIViewTestCase):
-    view_class = views.RackVoteView
+class RackUpVoteViewTestCase(restframework.APIViewTestCase):
+    view_class = views.RackUpVoteView
 
-    def test_rack_should_be_upvoted_with_correct_data_and_1_vote(self):
+    def test_rack_should_be_upvoted__when_rack_exists(self):
         initial_vote = 42
         rack = RackFactory(vote=initial_vote)
-        data = {
-            'rack_id': rack.id,
-            'vote': 1,
-        }
-        request = self.factory.patch(data=data,
-                                     path=reverse_lazy('racks:vote'))
 
-        response = self.view(request)
+        request = self.factory.patch(path=reverse_lazy('racks:upvote',
+                                                       kwargs={'pk': rack.pk}))
+
+        response = self.view(request, pk=rack.pk)
         rack.refresh_from_db()
 
         assert response.status_code == status.HTTP_200_OK
         assert rack.vote == initial_vote + 1
+
+    def test_404_should_be_returned__when_rack_doesnt_exist(self):
+        request = self.factory.patch(path=reverse_lazy('racks:upvote',
+                                                       kwargs={'pk': 42}))
+
+        response = self.view(request, pk=42)
+
+        assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+class RackDownVoteViewTestCase(restframework.APIViewTestCase):
+    view_class = views.RackDownVoteView
+
+    def test_rack_should_be_downvoted__when_rack_exists(self):
+        initial_vote = 42
+        rack = RackFactory(vote=initial_vote)
+        request = self.factory.patch(path=reverse_lazy('racks:upvote',
+                                                       kwargs={'pk': rack.pk}))
+
+        response = self.view(request, pk=rack.pk)
+        rack.refresh_from_db()
+
+        assert response.status_code == status.HTTP_200_OK
+        assert rack.vote == initial_vote - 1
+
+    def test_404_should_be_returned__when_rack_doesnt_exist(self):
+        request = self.factory.patch(path=reverse_lazy('racks:upvote',
+                                                       kwargs={'pk': 42}))
+
+        response = self.view(request, pk=42)
+
+        assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+class RackSolveViewTestCase(restframework.APIViewTestCase):
+    view_class = views.RackSolveView
+
+    def test_rack_should_be_marked_solved__on_post(self):
+        rack = RackFactory()
+        request = self.factory.patch(path=reverse_lazy('racks:solve',
+                                                       kwargs={'pk': rack.pk}))
+
+        response = self.view(request, pk=rack.pk)
+        rack.refresh_from_db()
+
+        assert response.status_code == status.HTTP_200_OK
+        assert rack.solved
+
+    def test_404_should_be_returned__when_rack_doesnt_exist(self):
+        request = self.factory.patch(path=reverse_lazy('racks:solve',
+                                                       kwargs={'pk': 42}))
+
+        response = self.view(request, pk=42)
+
+        assert response.status_code == status.HTTP_404_NOT_FOUND
