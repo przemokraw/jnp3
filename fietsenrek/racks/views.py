@@ -1,4 +1,3 @@
-from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from rest_framework import views
 from rest_framework import status
@@ -38,7 +37,7 @@ class RackDownVoteView(generics.UpdateAPIView):
 
     def patch(self, request, *args, **kwargs):
         rack = self.get_object()
-        rack = rack.down_vote()
+        rack.down_vote()
         return super().patch(request, *args, **kwargs)
 
 
@@ -50,3 +49,11 @@ class RackSolveView(generics.UpdateAPIView):
         rack = self.get_object()
         rack.solve()
         return super().patch(request, *args, **kwargs)
+
+
+class RackDescriptionSearchView(generics.ListAPIView):
+    serializer_class = serializers.RackSerializer
+
+    def get_queryset(self):
+        text = self.request.query_params.get('text', '')
+        return models.Rack.objects.filter(description__search=text)

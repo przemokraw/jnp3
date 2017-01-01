@@ -2,8 +2,16 @@ language: python
 python:
   - 3.5
 install:
-  - pip install -r requirements/local.txt
+  - pip install -r requirements/production.txt
   - pip install coverage
+services:
+  - postgresql
+env:
+  global:
+    - DJANGO_SETTINGS_MODULE="fietsenrek.settings.travis"
+before_script:
+  - psql -c 'create database travis_ci_test;' -U postgres
+  - python fietsenrek/manage.py migrate
 script: pytest fietsenrek
 after_success:
   - pip install codecov

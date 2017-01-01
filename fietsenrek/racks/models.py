@@ -3,13 +3,13 @@ from django.contrib.auth.models import User
 
 
 class RackProblems:
-    there_are_no_racks = 'no_racks'
-    there_are_too_few_racks = 'too_few'
-    there_are_stupid_racks = 'stupid'
+    there_are_no_racks = 1
+    there_are_too_few_racks = 2
+    there_are_stupid_racks = 3
     CHOICES = (
-        ('no_racks', there_are_no_racks),
-        ('too_few', there_are_too_few_racks),
-        ('stupid', there_are_stupid_racks),
+        (there_are_no_racks, 'There are no racks'),
+        (there_are_too_few_racks, 'There are too few racks'),
+        (there_are_stupid_racks, 'The racks are not safe'),
     )
 
 
