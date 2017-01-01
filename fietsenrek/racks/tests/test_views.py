@@ -160,3 +160,39 @@ class RackSolveViewTestCase(restframework.APIViewTestCase):
         response = self.view(request, pk=42)
 
         assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+class RackDescriptionSearchViewTestCase(restframework.APIViewTestCase):
+    view_class = views.RackDescriptionSearchView
+
+    def test_racks_should_be_returned__when_search_text_matches_descriptions(self):
+        RackFactory.create_batch(10, description='matching description')
+        text = 'matching'
+        data = {'text': text}
+        request = self.factory.get(data=data)
+
+        response = self.view(request)
+
+        assert response.status_code == status.HTTP_200_OK
+        assert len(response.data) == 10
+
+    def test_no_racks_should_be_returned__when_no_search_text_is_provided(self):
+        RackFactory.create_batch(10)
+        data = {}
+        request = self.factory.get(data=data)
+
+        response = self.view(request)
+
+        assert response.status_code == status.HTTP_200_OK
+        assert len(response.data) == 0
+
+    def test_no_racks_should_be_returned__when_no_description_matches(self):
+        RackFactory.create_batch(10)
+        text = 'matching'
+        data = {'text': text}
+        request = self.factory.get(data=data)
+
+        response = self.view(request)
+
+        assert response.status_code == status.HTTP_200_OK
+        assert len(response.data) == 0
