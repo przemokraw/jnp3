@@ -196,3 +196,15 @@ class RackDescriptionSearchViewTestCase(restframework.APIViewTestCase):
 
         assert response.status_code == status.HTTP_200_OK
         assert len(response.data) == 0
+
+
+class RackProblemsViewTestCase(restframework.APIViewTestCase):
+    view_class = views.RackProblems
+
+    def test_view_should_return_problem_choices__on_get(self):
+        request = self.factory.get()
+
+        response = self.view(request)
+
+        assert response.status_code == status.HTTP_200_OK
+        assert response.data == RackProblems.CHOICES

@@ -57,3 +57,9 @@ class RackDescriptionSearchView(generics.ListAPIView):
     def get_queryset(self):
         text = self.request.query_params.get('text', '')
         return models.Rack.objects.filter(description__search=text)
+
+
+class RackProblems(views.APIView):
+    def get(self, request):
+        return Response(data=models.RackProblems.CHOICES,
+                        status=status.HTTP_200_OK)
