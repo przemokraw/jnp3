@@ -46,6 +46,7 @@ DJANGO_APPS = [
     'allauth.socialaccount.providers.facebook',
     'rest_auth',
     'rest_auth.registration',
+    'corsheaders',
 ]
 
 LOCAL_APPS = [
@@ -60,6 +61,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.cache.UpdateCacheMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.cache.FetchFromCacheMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -172,3 +174,10 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, MEDIA_URL)
+
+
+# CORS headers
+
+CORS_ORIGIN_WHITELIST = [
+    'localhost:3000'
+]
