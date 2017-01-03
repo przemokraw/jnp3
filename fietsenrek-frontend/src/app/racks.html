@@ -1,23 +1,81 @@
 <div ng-cloak >
-  <md-content class="md-padding" layout-xs="column" layout="row">
-    <div flex-xs flex-gt-xs="50" layout="column" layout-align="center">
+  <md-content layout-xs="column" layout="row" layout-align="center center">
+    <div flex-xs flex-gt-xs="80" layout="column" layout-align="center">
+      <md-input-container flex>
+        <label>Search</label>
+        <input type="text" ng-model="$ctrl.searchText" ng-change="$ctrl.onSearchTextChanged()"/>
+      </md-input-container>
+
+      <md-button ng-click="$ctrl.sort()">Sort on votes (currently {{$ctrl.sortingOrderVerbose}})</md-button>
+
       <div ng-repeat="rack in $ctrl.racks track by $index">
         <md-card md-theme="default" md-theme-watch>
           <md-card-title>
             <md-card-title-text>
-              <span class="md-headline">{{rack.rackId}}</span>
+              <span ng-hide="false" class="md-headline">{{rack.city}}, {{rack.country}}</span>
               <span class="md-subhead">{{rack.rackPlace}}</span>
+              <span class="md-subhead">Votes: {{rack.vote}}</span>
+              <span class="md-subhead">Description: {{rack.description}}</span>
+              <span class="md-subhead">Problem: {{$ctrl.problemsMap.get(rack.problem)}}</span>
+              <div>
+                <span class="md-subhead">Solved: {{rack.solved ? 'Yes' : 'No'}}</span>
+                <md-button ng-click="$ctrl.solve(rack.id)">Solve</md-button>
+              </div>
             </md-card-title-text>
             <md-card-title-media>
               <div class="md-media-lg card-media"></div>
             </md-card-title-media>
           </md-card-title>
           <md-card-actions layout="row" layout-align="end center">
-            <md-button>Up Vote</md-button>
-            <md-button>Down Vote</md-button>
+            <md-button ng-click="$ctrl.upvote(rack.id)">Up Vote</md-button>
+            <md-button ng-click="$ctrl.downvote(rack.id)">Down Vote</md-button>
           </md-card-actions>
         </md-card>
       </div>
+
+      <div id="addHidden">
+        <md-card md-theme="default" md-theme-watch ng-hide="!$ctrl.isCreating">
+          <md-card-title>
+            <md-card-title-text>
+
+              <md-input-container flex>
+                <label>City</label>
+                <input type="text" ng-model="$ctrl.newCity"/>
+              </md-input-container>
+
+              <md-input-container flex>
+                <label>Country</label>
+                <input type="text" ng-model="$ctrl.newCountry"/>
+              </md-input-container>
+
+              <md-input-container flex>
+                <label>Description</label>
+                <input type="text" ng-model="$ctrl.newDescription"/>
+              </md-input-container>
+
+              <md-input-container>
+                <label>Problem</label>
+                <md-select ng-model="$ctrl.newProblem">
+                  <md-option ng-repeat="problem in $ctrl.problems" ng-value="problem[0]" ng-selected="$index === 0">
+                    {{problem[1]}}
+                  </md-option>
+                </md-select>
+              </md-input-container>
+
+            </md-card-title-text>
+          </md-card-title>
+          <md-card-actions layout="row" layout-align="end center">
+            <md-button ng-click="$ctrl.save()">Save</md-button>
+            <md-button ng-click="$ctrl.cancel()">Cancel</md-button>
+          </md-card-actions>
+        </md-card>
+      </div>
+
     </div>
   </md-content>
+
+  <div id="add" layout="row" layout-align="center center">
+    <md-button class="md-accent md-raised md-hue-2" ng-click="$ctrl.create()">Create</md-button>
+  </div>
+
 </div>
