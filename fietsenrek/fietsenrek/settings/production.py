@@ -14,11 +14,17 @@ INSTALLED_APPS += [
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django_postgrespool',
         'NAME': 'fietsenrek',
         'USER': 'mrozek',
         'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '',
     }
+}
+
+DATABASE_POOL_ARGS = {
+    'max_overflow': 10,
+    'pool_size': 5,
+    'recycle': 300,
 }
