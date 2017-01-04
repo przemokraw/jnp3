@@ -13,12 +13,12 @@ class RackCreateView(generics.CreateAPIView):
 
 class RackListView(generics.ListAPIView):
     serializer_class = serializers.RackSerializer
-    queryset = models.Rack.objects.all()
+    queryset = models.Rack.objects.select_related().all()
 
 
 class RackTopListView(generics.ListAPIView):
     serializer_class = serializers.RackSerializer
-    queryset = models.Rack.objects.all().order_by('-vote')[:10]
+    queryset = models.Rack.objects.select_related().all().order_by('-vote')[:10]
 
 
 class RackUpVoteView(generics.UpdateAPIView):
