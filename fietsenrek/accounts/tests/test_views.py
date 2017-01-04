@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.contrib.messages.middleware import MessageMiddleware
 from django.contrib.sessions.middleware import SessionMiddleware
 from djet import assertions
@@ -7,6 +6,7 @@ from djet import testcases
 from rest_auth.registration.views import RegisterView
 from rest_framework import status
 
+from accounts.models import User
 from accounts.factories import UserFactory
 
 

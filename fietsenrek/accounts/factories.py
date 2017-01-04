@@ -1,6 +1,6 @@
 import factory
 
-from django.contrib.auth.models import User
+from .models import User
 
 
 class UserFactory(factory.DjangoModelFactory):
