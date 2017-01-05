@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 export const racks = {
   template: require('./racks.html'),
   controller($http, $log, $window, $location) {
@@ -93,7 +95,7 @@ export const racks = {
 
     this.save = function () {
       this.newData = {};
-      // this.newData.place_id = 42;
+      this.newData.place_id = 42;
       this.newData.city = this.newCity;
       this.newData.country = this.newCountry;
       this.newData.description = this.newDescription;
