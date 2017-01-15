@@ -10,5 +10,6 @@ urlpatterns = [
     url(r'^(?P<pk>\d+)/downvote/$', views.RackDownVoteView.as_view(), name='downvote'),
     url(r'^(?P<pk>\d+)/upvote/$', views.RackUpVoteView.as_view(), name='upvote'),
     url(r'^(?P<pk>\d+)/solve/$', views.RackSolveView.as_view(), name='solve'),
-    url(r'^problems/$', views.RackProblems.as_view(), name='problems')
+    url(r'^problems/$', views.RackProblems.as_view(), name='problems'),
+    url(r'^description-search/$', views.RackDescriptionSearchView.as_view(), name='description-search'),
 ]
