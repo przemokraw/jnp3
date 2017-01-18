@@ -31,11 +31,13 @@ To run the project backend locally follow these steps:
     ./manage.py runserver localhost:8000
     ```
 7. Add social app integrations:
-    * **for Facebook**: go to [the developers site](https://developers.facebook.com/apps/237608516653103/dashboard/)
+    1. **for Facebook**: 
+        * go to [the developers site](https://developers.facebook.com/apps/237608516653103/dashboard/)
         and create a Facebook Social App in the Django admin using App ID and 
         App Secret from the site.
+        * in Django Admin change existing site (example.com) to http://localhost:8000/
+        * in Facebook Social App add site http://localhost:8000/
  
-
 To run the project frontend locally follow these steps:
 
 1. Install npm (https://docs.npmjs.com/getting-started/installing-node)
@@ -49,5 +51,4 @@ To run the project frontend locally follow these steps:
 5. `npm run serve`
 
 6. Go to localhost:3000
-
 and you're good to go!
