@@ -1,3 +1,5 @@
+from django.core.cache import cache
+from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from rest_framework import views
 from rest_framework import status
@@ -13,17 +15,37 @@ class RackCreateView(generics.CreateAPIView):
 
 class RackListView(generics.ListAPIView):
     serializer_class = serializers.RackSerializer
-    queryset = models.Rack.objects.select_related().all()
+
+    def get_queryset(self):
+        queryset = cache.get('racks:all')
+        if not queryset:
+            queryset = models.Rack.objects.select_related().all()
+            cache.set('racks:all', queryset, timeout=60 * 1)
+        return queryset
 
 
 class RackTopListView(generics.ListAPIView):
     serializer_class = serializers.RackSerializer
-    queryset = models.Rack.objects.select_related().all().order_by('-vote')[:10]
+
+    def get_queryset(self):
+        queryset = cache.get('racks:top')
+        if not queryset:
+            queryset = models.Rack.objects.select_related().all().order_by('-vote')[:10]
+            cache.set('racks:top', queryset, timeout=60 * 5)
+        return queryset
 
 
-class RackUpVoteView(generics.UpdateAPIView):
+class RackDetailViewMixin(object):
+    def get_object(self):
+        pk = self.kwargs.get('pk')
+        rack = cache.get('racks:{}'.format(pk))
+        if not rack:
+            rack = get_object_or_404(models.Rack, pk=pk)
+        return rack
+
+
+class RackUpVoteView(RackDetailViewMixin, generics.UpdateAPIView):
     serializer_class = serializers.RackSerializer
-    queryset = models.Rack.objects.all()
 
     def patch(self, request, *args, **kwargs):
         rack = self.get_object()
@@ -31,9 +53,8 @@ class RackUpVoteView(generics.UpdateAPIView):
         return super().patch(request, *args, **kwargs)
 
 
-class RackDownVoteView(generics.UpdateAPIView):
+class RackDownVoteView(RackDetailViewMixin, generics.UpdateAPIView):
     serializer_class = serializers.RackSerializer
-    queryset = models.Rack.objects.all()
 
     def patch(self, request, *args, **kwargs):
         rack = self.get_object()
@@ -41,9 +62,8 @@ class RackDownVoteView(generics.UpdateAPIView):
         return super().patch(request, *args, **kwargs)
 
 
-class RackSolveView(generics.UpdateAPIView):
+class RackSolveView(RackDetailViewMixin, generics.UpdateAPIView):
     serializer_class = serializers.RackSerializer
-    queryset = models.Rack.objects.all()
 
     def patch(self, request, *args, **kwargs):
         rack = self.get_object()

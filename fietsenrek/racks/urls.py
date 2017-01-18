@@ -5,7 +5,7 @@ from . import views
 
 urlpatterns = [
     url(r'^create/$', views.RackCreateView.as_view(), name='create'),
-    url(r'^list/$', cache_page(60 * 3)(views.RackListView.as_view()), name='list'),
+    url(r'^list/$', cache_page(60 * 1)(views.RackListView.as_view()), name='list'),
     url(r'^top/$', cache_page(60 * 5)(views.RackTopListView.as_view()), name='top'),
     url(r'^(?P<pk>\d+)/downvote/$', views.RackDownVoteView.as_view(), name='downvote'),
     url(r'^(?P<pk>\d+)/upvote/$', views.RackUpVoteView.as_view(), name='upvote'),

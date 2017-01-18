@@ -1,3 +1,4 @@
+from django.core.cache import cache
 from django.db import models
 
 from accounts.models import User
@@ -44,3 +45,8 @@ class Rack(models.Model):
         self.solved = True
         self.save()
         return self
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        cache.set('racks:{}'.format(self.pk), self, timeout=60 * 5)
+        return super().save(force_insert, force_update, using, update_fields)

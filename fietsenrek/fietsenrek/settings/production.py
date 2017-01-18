@@ -16,7 +16,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django_postgrespool',
         'NAME': 'fietsenrek',
-        'USER': 'mrozek',
+        'USER': '',
         'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '',
