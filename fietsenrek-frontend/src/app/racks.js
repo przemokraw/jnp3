@@ -2,9 +2,8 @@
 
 export const racks = {
   template: require('./racks.html'),
-  controller($http, $log, $window, $location) {
+  controller($http, $log, $window, $location, $scope) {
     this.path = $location.path();
-    $log.log(this.path);
 
     // get racks
     $http({
@@ -25,6 +24,7 @@ export const racks = {
     }).then(response => {
       this.problems = angular.fromJson(response.data);
       this.problemsMap = new Map(this.problems);
+      $log.log(this.problemsMap);
     }, response => {
       $log.log(response);
     });
@@ -108,11 +108,12 @@ export const racks = {
       }).then(response => {
         this.newRack = angular.fromJson(response.data);
         this.racks.push(this.newRack);
+        this.isCreating = false;
+        $location.hash('addHidden');
       }, response => {
+        alert("Incorrect values, try again.");
         $log.log(response);
       });
-      this.isCreating = false;
-      $location.hash('addHidden');
     };
 
     this.cancel = function () {
@@ -138,6 +139,33 @@ export const racks = {
     this.searchText = "";
     this.onSearchTextChanged = function () {
       $log.log(this.searchText);
+      if (this.searchText === "") {
+        $http({
+          method: 'GET',
+          url: 'http://localhost:8000/racks/list/'
+        }).then(response => {
+          this.racks = angular.fromJson(response.data);
+        }, response => {
+          $log.log(response);
+        });
+      } else {
+        this.racks = {};
+      }
     };
+
+    $scope.uploadFile = function (files) {
+      $log.log("uploadFile");
+      $log.log(files[0]);
+    };
+
+    this.unsolvedImages = {};
+    this.unsolvedImages["There are no racks"] = 'http://127.0.0.1/images/no_racks.jpg';
+    this.unsolvedImages["There are too few racks"] = 'http://127.0.0.1/images/too_few_racks.jpg';
+    this.unsolvedImages["The racks are not safe"] = 'http://127.0.0.1/images/unsafe_racks.jpg';
+
+    this.solvedImages = {};
+    this.solvedImages["There are no racks"] = 'http://127.0.0.1/images/no_racks_solved.jpg';
+    this.solvedImages["There are too few racks"] = 'http://127.0.0.1/images/too_few_racks_solved.jpg';
+    this.solvedImages["The racks are not safe"] = 'http://127.0.0.1/images/unsafe_racks_solved.jpg';
   }
 };

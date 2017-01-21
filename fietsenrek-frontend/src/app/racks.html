@@ -12,18 +12,18 @@
         <md-card md-theme="default" md-theme-watch>
           <md-card-title>
             <md-card-title-text>
-              <span ng-hide="false" class="md-headline">{{rack.city}}, {{rack.country}}</span>
+              <span class="md-headline">{{rack.city}}, {{rack.country}}</span>
               <span class="md-subhead">{{rack.rackPlace}}</span>
               <span class="md-subhead">Votes: {{rack.vote}}</span>
               <span class="md-subhead">Description: {{rack.description}}</span>
               <span class="md-subhead">Problem: {{$ctrl.problemsMap.get(rack.problem)}}</span>
               <div>
                 <span class="md-subhead">Solved: {{rack.solved ? 'Yes' : 'No'}}</span>
-                <md-button ng-click="$ctrl.solve(rack.id)">Solve</md-button>
+                <md-button ng-hide="rack.solved" ng-click="$ctrl.solve(rack.id)">Solve</md-button>
               </div>
             </md-card-title-text>
             <md-card-title-media>
-              <div class="md-media-lg card-media"></div>
+              <img ng-src="{{rack.solved ? $ctrl.solvedImages[$ctrl.problemsMap.get(rack.problem)] : $ctrl.unsolvedImages[$ctrl.problemsMap.get(rack.problem)]}}" alt="Racks problem image" style="width:350px;height:200px;">
             </md-card-title-media>
           </md-card-title>
           <md-card-actions layout="row" layout-align="end center">
