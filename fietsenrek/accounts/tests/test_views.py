@@ -40,7 +40,7 @@ class RegistrationViewTestCase(assertions.StatusCodeAssertionsMixin,
         response = self.view(request)
 
         assert response.status_code == status.HTTP_201_CREATED
-        assert 'key' in response.data
+        assert 'token' in response.data
         assert User.objects.count() == 1
         assert User.objects.first().username == username
         assert User.objects.first().email == email

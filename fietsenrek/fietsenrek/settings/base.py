@@ -74,6 +74,8 @@ ROOT_URLCONF = 'fietsenrek.urls'
 
 SITE_ID = 1
 
+REST_USE_JWT = True
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -152,6 +154,12 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 
 AUTH_USER_MODEL = 'accounts.User'
+
+SOCIALACCOUNT_PROVIDERS = {
+    'facebook': {
+        'VERSION': 'v2.8'
+    }
+}
 
 
 # Internationalization

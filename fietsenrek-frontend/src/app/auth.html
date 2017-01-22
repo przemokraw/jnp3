@@ -1,0 +1,80 @@
+<div layout="row" ng-cloak>
+  <div ng-if="!isAuthenticated()">
+    You are not logged in. Please 
+    <md-button class="md-primary md-raised" ng-click="showLoginContainer()">
+      Sign in or sign up
+    </md-button>
+  </div>
+  <div ng-if="isAuthenticated()">
+    Hello, {{ user.email }}
+    <md-button class="md-primary md-raised" ng-click="logout()">
+      Log out
+    </md>
+  </div>
+</div>
+
+<div style="visibility:hidden">
+  <div class="md-dialog-container" id="loginDialog">
+    <md-dialog layout-padding>
+      <md-dialog-content>
+        <div class="md-padding">
+          <md-button class="md-primary md-raised" ng-click="authenticate('facebook')">
+            Sign in with Facebook
+          </md-button>
+        </div>
+        <span ng-show="info">{{info}}</span>
+        <md-tabs md-dynamic-height>
+          <md-tab label="Sign in">
+            <md-content>
+              <div layout="column" ng-cloak>
+                <md-input-container>
+                  <label>Email</label>
+                  <input type="email" ng-model="user.email"></input>
+                </md-input-container>
+
+                <md-input-container>
+                  <label>Password</label>
+                  <input type="password" ng-model="user.password"></input>
+                </md-input-container>
+
+                <md-button class="md-primary md-raised" ng-click="login()">
+                  Sign in
+                </md-button>
+              </div>
+            </md-content>
+          </md-tab>
+          <md-tab label="Sign up">
+            <md-content>
+              <div layout="column" ng-cloak>
+                <md-input-container>
+                  <label>Username</label>
+                  <input type="text" ng-model="user.username"></input>
+                </md-input-container>
+
+                <md-input-container>
+                  <label>Email</label>
+                  <input type="email" ng-model="user.email"></input>
+                </md-input-container>
+
+                <md-input-container>
+                  <label>Password</label>
+                  <input type="password" ng-model="user.password1"></input>
+                </md-input-container>
+
+                <md-input-container>
+                  <label>Confirm password</label>
+                  <input type="password" ng-model="user.password2"></input>
+                </md-input-container>
+
+                <md-button class="md-primary md-raised" ng-click="signup()">
+                  Sign up
+                </md-button>
+              </div>
+            </md-content>
+          </md-tab>
+        </md-tabs>
+      </md-dialog-content>
+    </md-dialog>
+  </div>
+</div>
+
