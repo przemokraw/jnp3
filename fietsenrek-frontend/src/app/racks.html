@@ -23,7 +23,7 @@
               </div>
             </md-card-title-text>
             <md-card-title-media>
-              <img ng-src="{{rack.solved ? $ctrl.solvedImages[$ctrl.problemsMap.get(rack.problem)] : $ctrl.unsolvedImages[$ctrl.problemsMap.get(rack.problem)]}}" alt="Racks problem image" style="width:350px;height:200px;">
+              <img ng-src="{{rack.solved ? $ctrl.solvedImage : $ctrl.unsolvedImages[$ctrl.problemsMap.get(rack.problem)]}}" alt="Racks problem image" style="width:350px;height:200px;">
             </md-card-title-media>
           </md-card-title>
           <md-card-actions layout="row" layout-align="end center">
@@ -75,7 +75,7 @@
   </md-content>
 
   <div id="add" layout="row" layout-align="center center">
-    <md-button class="md-accent md-raised md-hue-2" ng-click="$ctrl.create()">Create</md-button>
+    <md-button class="md-accent md-raised md-hue-2" ng-click="$ctrl.create()" ng-disabled="!isAuthenticated()">{{isAuthenticated()? 'Create' : 'Log in to create'}}</md-button>
   </div>
 
 </div>

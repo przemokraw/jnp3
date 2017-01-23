@@ -1,0 +1,36 @@
+version: '2'
+services:
+  static_nginx:
+    build: ./static_nginx
+    ports:
+     - "80:80"
+
+  django_app_1:
+  #build django app instance 1
+  links:
+  - postgres_production:postgres_production
+
+  django_app_2:
+  #build django app instance 2
+  links:
+  - postgres_production:postgres_production
+
+  django_app_3:
+  #build django app instance 3
+  links:
+  - postgres_production:postgres_production
+
+  load_balancer:
+    build: ./load_balancer
+    ports:
+    - "9999:9999"
+    links:
+    - django_app_1:django_app_1
+    - django_app_2:django_app_2
+    - django_app_3:django_app_3
+
+  postgres_production:
+    build: ./postgres_production
+    ports:
+    #expose needed ports, example above
+

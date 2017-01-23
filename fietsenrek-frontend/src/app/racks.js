@@ -2,7 +2,7 @@
 
 export const racks = {
   template: require('./racks.html'),
-  controller($http, $log, $window, $location, $scope) {
+  controller($http, $log, $window, $location) {
     this.path = $location.path();
 
     // get racks
@@ -95,7 +95,7 @@ export const racks = {
 
     this.save = function () {
       this.newData = {};
-      this.newData.place_id = 42;
+      this.newData.place_id = 42; //random value, not used but needed
       this.newData.city = this.newCity;
       this.newData.country = this.newCountry;
       this.newData.description = this.newDescription;
@@ -111,7 +111,7 @@ export const racks = {
         this.isCreating = false;
         $location.hash('addHidden');
       }, response => {
-        alert("Incorrect values, try again.");
+        alert("Incorrect values or server error, try again.");
         $log.log(response);
       });
     };
@@ -153,19 +153,11 @@ export const racks = {
       }
     };
 
-    $scope.uploadFile = function (files) {
-      $log.log("uploadFile");
-      $log.log(files[0]);
-    };
-
     this.unsolvedImages = {};
     this.unsolvedImages["There are no racks"] = 'http://127.0.0.1/images/no_racks.jpg';
     this.unsolvedImages["There are too few racks"] = 'http://127.0.0.1/images/too_few_racks.jpg';
     this.unsolvedImages["The racks are not safe"] = 'http://127.0.0.1/images/unsafe_racks.jpg';
 
-    this.solvedImages = {};
-    this.solvedImages["There are no racks"] = 'http://127.0.0.1/images/no_racks_solved.jpg';
-    this.solvedImages["There are too few racks"] = 'http://127.0.0.1/images/too_few_racks_solved.jpg';
-    this.solvedImages["The racks are not safe"] = 'http://127.0.0.1/images/unsafe_racks_solved.jpg';
+    this.solvedImage = 'http://127.0.0.1/images/solved.jpg';
   }
 };
