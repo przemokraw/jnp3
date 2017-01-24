@@ -8,7 +8,7 @@ export const racks = {
     // get racks
     $http({
       method: 'GET',
-      url: 'http://localhost:8000/racks/list/'
+      url: 'http://localhost:9999/racks/list/'
     }).then(response => {
       this.racks = angular.fromJson(response.data);
       $log.log(this.racks);
@@ -20,7 +20,7 @@ export const racks = {
     // get problems
     $http({
       method: 'GET',
-      url: 'http://localhost:8000/racks/problems/'
+      url: 'http://localhost:9999/racks/problems/'
     }).then(response => {
       this.problems = angular.fromJson(response.data);
       this.problemsMap = new Map(this.problems);
@@ -40,7 +40,7 @@ export const racks = {
 
       $http({
         method: 'PATCH',
-        url: 'http://localhost:8000/racks/'.concat(rackId).concat('/upvote/')
+        url: 'http://localhost:9999/racks/'.concat(rackId).concat('/upvote/')
       }).then(response => {
         $log.log(response);
       }, response => {
@@ -59,7 +59,7 @@ export const racks = {
 
       $http({
         method: 'PATCH',
-        url: 'http://localhost:8000/racks/'.concat(rackId).concat('/downvote/')
+        url: 'http://localhost:9999/racks/'.concat(rackId).concat('/downvote/')
       }).then(response => {
         $log.log(response);
       }, response => {
@@ -78,7 +78,7 @@ export const racks = {
 
       $http({
         method: 'PATCH',
-        url: 'http://localhost:8000/racks/'.concat(rackId).concat('/solve/')
+        url: 'http://localhost:9999/racks/'.concat(rackId).concat('/solve/')
       }).then(response => {
         $log.log(response);
       }, response => {
@@ -103,7 +103,7 @@ export const racks = {
       this.newData.solved = false;
       $http({
         method: 'POST',
-        url: 'http://localhost:8000/racks/create/',
+        url: 'http://localhost:9999/racks/create/',
         data: this.newData
       }).then(response => {
         this.newRack = angular.fromJson(response.data);
@@ -137,19 +137,30 @@ export const racks = {
 
     // searching
     this.searchText = "";
-    this.onSearchTextChanged = function () {
+    this.onSearch = function (event) {
+      $log.log(event.keyCode);
+      if (event.keyCode !== 13) {
+        return;
+      }
       $log.log(this.searchText);
       if (this.searchText === "") {
         $http({
           method: 'GET',
-          url: 'http://localhost:8000/racks/list/'
+          url: 'http://localhost:9999/racks/list/'
         }).then(response => {
           this.racks = angular.fromJson(response.data);
         }, response => {
           $log.log(response);
         });
       } else {
-        this.racks = {};
+        $http({
+          method: 'GET',
+          url: 'http://localhost:9999/racks/description-search?text='.concat(this.searchText)
+        }).then(response => {
+          this.racks = angular.fromJson(response.data);
+        }, response => {
+          $log.log(response);
+        });
       }
     };
 
