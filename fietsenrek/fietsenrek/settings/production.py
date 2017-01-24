@@ -2,6 +2,13 @@ from .base import *
 
 DEBUG = False
 
+
+USE_X_FORWARDED_HOST = True
+
+
+USE_X_FORWARDED_PORT = True
+
+
 ALLOWED_HOSTS = [
     'localhost',
 ]

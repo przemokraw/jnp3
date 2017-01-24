@@ -29,6 +29,7 @@ services:
         - cache1:cache1
         - cache2:cache2
      expose:
+      - "8080"
       - "8000"
      depends_on:
        - db
@@ -40,6 +41,7 @@ services:
       - cache1:cache1
       - cache2:cache2
     expose:
+      - "8080"
       - "8000"
     depends_on:
      - db
