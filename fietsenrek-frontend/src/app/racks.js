@@ -2,7 +2,7 @@
 
 export const racks = {
   template: require('./racks.html'),
-  controller($http, $log, $window, $location) {
+  controller($http, $log, $window, $location, $mdToast, $auth) {
     this.path = $location.path();
 
     // get racks
@@ -90,7 +90,8 @@ export const racks = {
     this.isCreating = false;
     this.create = function () {
       this.isCreating = true;
-      $location.hash('add');
+      $location.hash('addHidden');
+      $anchorScroll();
     };
 
     this.save = function () {
@@ -110,15 +111,19 @@ export const racks = {
         this.racks.push(this.newRack);
         this.isCreating = false;
         $location.hash('addHidden');
-      }, response => {
-        alert("Incorrect values or server error, try again.");
+      },response => {
+        $mdToast.show($mdToast.simple()
+          .textContent("Incorrect values or server error, try again.")
+          .position("bottom left")
+          .parent(document.querySelectorAll('#addHidden'))
+        );
         $log.log(response);
       });
     };
 
     this.cancel = function () {
       this.isCreating = false;
-      $location.hash('addHidden');
+      $location.hash('racks');
     };
 
     // sorting
@@ -162,6 +167,10 @@ export const racks = {
           $log.log(response);
         });
       }
+    };
+
+    this.isAuthenticated = function () {
+      return $auth.isAuthenticated();
     };
 
     this.unsolvedImages = {};

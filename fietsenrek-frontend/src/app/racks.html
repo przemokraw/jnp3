@@ -1,5 +1,5 @@
 <div ng-cloak >
-  <md-content layout-xs="column" layout="row" layout-align="center center">
+  <md-content id="racks" layout-xs="column" layout="row" layout-align="center center">
     <div flex-xs flex-gt-xs="80" layout="column" layout-align="center">
       <md-input-container flex>
         <label>Search in descriptions</label>
@@ -7,6 +7,10 @@
       </md-input-container>
 
       <md-button ng-click="$ctrl.sort()">Sort on votes</md-button>
+
+      <div layout="row" layout-align="center center">
+        <md-button ng-hide="$ctrl.isCreating" class="md-accent md-raised md-hue-2" ng-click="$ctrl.create()" ng-disabled="!$ctrl.isAuthenticated()">{{$ctrl.isAuthenticated()? 'Create' : 'Log in to create'}}</md-button>
+      </div>
 
       <div ng-repeat="rack in $ctrl.racks track by $index">
         <md-card md-theme="default" md-theme-watch>
@@ -34,7 +38,7 @@
       </div>
 
       <div id="addHidden">
-        <md-card md-theme="default" md-theme-watch ng-hide="!$ctrl.isCreating">
+        <md-card md-theme="default" md-theme-watch ng-hide="!$ctrl.isCreating||!$ctrl.isAuthenticated()">
           <md-card-title>
             <md-card-title-text>
 
@@ -75,7 +79,7 @@
   </md-content>
 
   <div id="add" layout="row" layout-align="center center">
-    <md-button class="md-accent md-raised md-hue-2" ng-click="$ctrl.create()" ng-disabled="!isAuthenticated()">{{isAuthenticated()? 'Create' : 'Log in to create'}}</md-button>
+    <md-button ng-hide="$ctrl.isCreating" class="md-accent md-raised md-hue-2" ng-click="$ctrl.create()" ng-disabled="!$ctrl.isAuthenticated()">{{$ctrl.isAuthenticated()? 'Create' : 'Log in to create'}}</md-button>
   </div>
 
 </div>
