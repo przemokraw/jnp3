@@ -2,6 +2,8 @@ version: '2'
 services:
   db:
     image: postgres
+#    volumes:
+#            - /opt/starter/psql:/var/lib/postgresql/data/pgdata
     ports:
       - "5433:5432"
 
@@ -13,50 +15,42 @@ services:
   cache2:
     image: memcached
     ports:
-      - "11212:11211"
+      - "11212:11212"
 
   static_nginx:
     build: ./static_nginx
     ports:
-     - "80:80"
+      - "80:80"
 
   django_app_1:
      build: ./fietsenrek
      links:
-      - db:db
-     ports:
-       - "8000:8000"
+        - db:db
+        - cache1:cache1
+        - cache2:cache2
+     expose:
+      - "8000"
      depends_on:
        - db
-     command: bash -c "python manage.py migrate --settings=fietsenrek.settings.production && python manage.py runserver 0.0.0.0:8000 --settings=fietsenrek.settings.production"
 
-#  django_app_2:
-#    build: ./fietsenrek
-#    links:
-#    - db:db
-#    ports:
-#     - "8001:8001"
-#    depends_on:
-#     - db
-#    command: python manage.py runserver 0.0.0.0:8001 --settings=fietsenrek.settings.production
-#
-#
-#  django_app_3:
-#    build: ./fietsenrek
-#    links:
-#    - db:db
-#    ports:
-#     - "8002:8002"
-#    depends_on:
-#     - db
-#    command: python manage.py runserver 0.0.0.0:8002 --settings=fietsenrek.settings.production
+  django_app_2:
+    build: ./fietsenrek
+    links:
+      - db:db
+      - cache1:cache1
+      - cache2:cache2
+    expose:
+      - "8000"
+    depends_on:
+     - db
 
-
-#  load_balancer:
-#    build: ./load_balancer
-#    ports:
-#    - "9999:9999"
-#    links:
-#    - django_app_1:django_app_1
-#    - django_app_2:django_app_2
-#    - django_app_3:django_app_3
+  load_balancer:
+    build: ./load_balancer
+    ports:
+      - "9999:9999"
+    depends_on:
+      - django_app_1
+      - django_app_2
+    links:
+      - django_app_1:django_app_1
+      - django_app_2:django_app_2
