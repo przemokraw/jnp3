@@ -1,36 +1,62 @@
 version: '2'
 services:
+  db:
+    image: postgres
+    ports:
+      - "5433:5432"
+
+  cache1:
+    image: memcached
+    ports:
+      - "11211:11211"
+
+  cache2:
+    image: memcached
+    ports:
+      - "11212:11211"
+
   static_nginx:
     build: ./static_nginx
     ports:
      - "80:80"
 
   django_app_1:
-  #build django app instance 1
-  links:
-  - postgres_production:postgres_production
+     build: ./fietsenrek
+     links:
+      - db:db
+     ports:
+       - "8000:8000"
+     depends_on:
+       - db
+     command: bash -c "python manage.py migrate --settings=fietsenrek.settings.production && python manage.py runserver 0.0.0.0:8000 --settings=fietsenrek.settings.production"
 
-  django_app_2:
-  #build django app instance 2
-  links:
-  - postgres_production:postgres_production
+#  django_app_2:
+#    build: ./fietsenrek
+#    links:
+#    - db:db
+#    ports:
+#     - "8001:8001"
+#    depends_on:
+#     - db
+#    command: python manage.py runserver 0.0.0.0:8001 --settings=fietsenrek.settings.production
+#
+#
+#  django_app_3:
+#    build: ./fietsenrek
+#    links:
+#    - db:db
+#    ports:
+#     - "8002:8002"
+#    depends_on:
+#     - db
+#    command: python manage.py runserver 0.0.0.0:8002 --settings=fietsenrek.settings.production
 
-  django_app_3:
-  #build django app instance 3
-  links:
-  - postgres_production:postgres_production
 
-  load_balancer:
-    build: ./load_balancer
-    ports:
-    - "9999:9999"
-    links:
-    - django_app_1:django_app_1
-    - django_app_2:django_app_2
-    - django_app_3:django_app_3
-
-  postgres_production:
-    build: ./postgres_production
-    ports:
-    #expose needed ports, example above
-
+#  load_balancer:
+#    build: ./load_balancer
+#    ports:
+#    - "9999:9999"
+#    links:
+#    - django_app_1:django_app_1
+#    - django_app_2:django_app_2
+#    - django_app_3:django_app_3
